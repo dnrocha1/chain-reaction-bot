@@ -18,6 +18,11 @@ def desenhaTabuleiro(tabuleiro=base.Tabuleiro()):
 	pygame.display.update()
 	print "Finalizou execucao"
 
+def exibe_movimento(pos):
+    quad = pygame.Rect(pos[1]*50,pos[0]*50,50,50)
+    pygame.draw.rect(surface,(255,255,0),quad,0)
+    pygame.display.update()
+    pygame.time.wait(250)
 
 def main():
 	global linhas,colunas,surface
@@ -36,8 +41,20 @@ def main():
 	tabuleiro = base.Tabuleiro(linhas=linhas,colunas=colunas)
 	total_moves = 0
 
-	#game screen
+	#tela de jogo
 	desenhaTabuleiro(tabuleiro)
+
+	this_loop = True
+	while this_loop:
+		for event in pygame.event.get():
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				x,y = pygame.mouse.get_pos()
+				x,y = x/50,y/50
+				if not (tabuleiro.novo_movimento == base.sgn(tabuleiro[(y,x)]) or 0 == base.sgn(tabuleiro[(y,x)])):
+					continue
+				tabuleiro[(y,x)] = tabuleiro[(y,x)] + tabuleiro.novo_movimento
+				exibe_movimento((y,x))
+				desenhaTabuleiro(tabuleiro)
 
 def getNumColunas():
     surface.fill((0,0,0))
