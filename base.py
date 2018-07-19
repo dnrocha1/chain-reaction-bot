@@ -91,12 +91,7 @@ def movimento(tabuleiro, pos):
 			if abs(tabuleiro[pos]) >= tabuleiro.massa_critica(pos):
 				instavel.append(pos)
 		if time.time() - t >= 3:
-			#Can't afford to spend more time, strange loop here!
-			#print board, pos
-			#raw_input()
 			break
-		#print board
-		#raw_input()
 		if not instavel:
 			break
 		for pos in instavel:
