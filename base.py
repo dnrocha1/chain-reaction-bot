@@ -4,7 +4,7 @@ import time
 # -*- coding: utf-8 -*-
 
 sgn = lambda n: 0 if n == 0 else n/abs(n)
-'''Função sinal
+'''Funcao sinal
 sgn(n) = -1 se n < 0
 sgn(n) = 0 se n = 0
 sgn(n) = 1 se n > 0
@@ -17,9 +17,9 @@ class Tabuleiro():
 	def __init__(self, colunas=6, linhas=9, novo_movimento=1):
 		'''Construtor do tabuleiro.
 		
-		Como iremos trabalhar com um tabuleiro 9x6, os valores serão predefinidos no próprio
-		construtor, sem possibilidade de alteração. Lembrando que a eficiência dos algoritmos
-		depende, também, do tamanho do tabuleiro, qualquer alteração pode comprometê-la.
+		Como iremos trabalhar com um tabuleiro 9x6, os valores serao predefinidos no proprio
+		construtor, sem possibilidade de alteracaoo. Lembrando que a eficiencia dos algoritmos
+		depende, tambem, do tamanho do tabuleiro, qualquer alteracao pode compromete-la.
 		
 		'''
 		self.linhas = linhas
@@ -47,13 +47,13 @@ class Tabuleiro():
 
 		
 	def massa_critica(self,pos):
-		'''Essa função retorna a massa crítica de uma determinada casela do grid
+		'''Essa funcao retorna a massa critica de uma determinada casela do grid
 		
 		Args:
 			pos (tuple): Tupla com as coordenadas da casela
 			
 		Return:
-			int: Massa crítica da casela
+			int: Massa critica da casela
 		
 		'''
 		if pos == (0,0) or pos == (self.linhas - 1, self.colunas - 1) or pos == (self.linhas - 1, 0) or pos == (0, self.colunas - 1):
@@ -64,7 +64,7 @@ class Tabuleiro():
 			return 4
 	
 	def vizinhos(self,pos):
-		'''Essa função retorna uma lista com os vizinhos de uma casela.
+		'''Essa funcao retorna uma lista com os vizinhos de uma casela.
 		
 		Args:
 			pos (tuple): Tupla com as coordenadas da casela
@@ -81,17 +81,17 @@ class Tabuleiro():
 		return vizinhos
 		
 def movimento(tabuleiro, pos):
-	'''Essa função realiza um movimento no tabuleiro.
+	'''Essa funcao realiza um movimento no tabuleiro.
 	
-	Obs.: Ela se preocupa com o estado das caselas que ficarão instáveis com o movimento. As reações futuras não
-	são tratadas aqui.
+	Obs.: Ela se preocupa com o estado das caselas que ficarao instaveis com o movimento. As reacoes futuras nao
+	sao tratadas aqui.
 		
 	Args:
 		tabuleiro (tabuleiro): tabuleiro antes do movimento
 		pos (tuple): Tupla com as coordenadas da casela
 		
 	Return:
-		tabuleiro: estado do tabuleiro imediatamente após o movimento
+		tabuleiro: estado do tabuleiro imediatamente apos o movimento
 			
 	'''
 	tabuleiro = copy.deepcopy(tabuleiro)
