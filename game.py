@@ -18,16 +18,17 @@ def main():
 def escolher_jogador():
     flag = True
     while flag:
-		for event in pygame.event.get():
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				y = pygame.mouse.get_pos()[1]
-				if y < 25*m:
-					is_redPlayer = True
-				else:
-					is_redPlayer = False
-				flag = False
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                y = pygame.mouse.get_pos()[1]
+                if y < 25*m:
+                    is_redPlayer = True
+                else:
+                    is_redPlayer = False
+                flag = False
     return is_redPlayer
 
+"""Funcao para exibir a tela incial. Exibindo as opcoes de cores para jogadores"""
 def tela_inicial():
     font = pygame.font.Font('Font.ttf', 72)
     text = font.render("Vermelho", 1, (255,0,0))

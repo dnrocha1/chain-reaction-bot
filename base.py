@@ -28,3 +28,23 @@ class Board():
 			s += "\n"
 		return s
 	
+	# [to do: Não entendi o que era esse aqui]
+	def hash(self):
+		return str(self.board)+str(self.new_move)
+
+	"""Identifica pontos limites do tabuleiro"""		
+	def pontos_limites(self,pos):
+		if pos == (0,0) or pos == (self.m - 1, self.n - 1) or pos == (self.m - 1, 0) or pos == (0, self.n - 1):
+			return 2
+		elif pos[0] == 0 or pos[0] == self.m-1 or pos[1] == 0 or pos[1] == self.n-1:
+			return 3
+		else:
+			return 4
+	
+	def vizinhos(self,pos):
+		n = []
+		lista_vizinhos = [(pos[0],pos[1]+1), (pos[0],pos[1]-1), (pos[0]+1,pos[1]), (pos[0]-1,pos[1])]
+		for i in vizinhos:
+			if 0 <= i[0] < self.m and 0 <= i[1] < self.n:
+				n.append(i)
+		return n
