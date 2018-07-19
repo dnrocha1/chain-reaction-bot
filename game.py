@@ -14,7 +14,7 @@ def desenhaTabuleiro(tabuleiro=base.Tabuleiro()):
 		cor = (90,90,90)
 		texto = font.render(str(tabuleiro[pos])[-1], 1, cor)
 		texto_pos = texto.get_rect(centerx = pos[1]*50 + 25, centery = pos[0]*50 + 25)
-		surface.blit(texto, text_pos)
+		surface.blit(texto, texto_pos)
 	pygame.display.update()
 	print "Finalizou execucao"
 
@@ -23,13 +23,9 @@ def main():
 	global linhas,colunas,surface
 
 	tela_inicial()
-
 	is_redPlayer = escolher_jogador()
-
 	depth = escolher_profundidade()
-
 	rows = getNumLinhas()
-
 	columns = getNumColunas()
 
 
@@ -37,7 +33,7 @@ def main():
 	linhas, colunas = rows, columns
 	surface = pygame.display.set_mode((50*colunas, 50*linhas))
 	pygame.display.set_caption('Chain Reaction')
-	tabuleiro = base.tabuleiro(linhas=linhas,colunas=colunas)
+	tabuleiro = base.Tabuleiro(linhas=linhas,colunas=colunas)
 	total_moves = 0
 
 	#game screen
