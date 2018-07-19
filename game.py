@@ -7,6 +7,18 @@ pygame.init()
 surface = pygame.display.set_mode((50*n, 50*m))
 pygame.display.set_caption('Chain Reaction')
 
+def drawBoard(board=base.Board()):
+	surface.fill((0,0,0))
+	font = pygame.font.Font('Font.ttf', 48)
+	for pos in [(x,y) for x in xrange(board.m) for y in xrange(board.n)]:
+		color = (90,90,90)
+		text = font.render(str(board[pos])[-1], 1, color)
+		textpos = text.get_rect(centerx = pos[1]*50 + 25, centery = pos[0]*50 + 25)
+		surface.blit(text, textpos)
+	pygame.display.update()
+	print "Finalizou execucao"
+
+
 def main():
 	global m,n, surface
 
@@ -20,6 +32,16 @@ def main():
 
 	columns = getNumColunas()
 
+
+	#inicializa o basico e a janela do jogo
+	m, n = rows, columns
+	surface = pygame.display.set_mode((50*n, 50*m))
+	pygame.display.set_caption('Chain Reaction')
+	board = base.Board(m=m,n=n)
+	total_moves = 0
+
+	#game screen
+	drawBoard(board)
 
 def getNumColunas():
     surface.fill((0,0,0))
