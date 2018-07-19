@@ -7,7 +7,7 @@ pygame.init()
 surface = pygame.display.set_mode((50*n, 50*m))
 pygame.display.set_caption('Chain Reaction')
 
-def drawBoard(board=base.Board()):
+def drawBoard(board=base.Tabuleiro()):
 	surface.fill((0,0,0))
 	font = pygame.font.Font('Font.ttf', 48)
 	for pos in [(x,y) for x in xrange(board.m) for y in xrange(board.n)]:
