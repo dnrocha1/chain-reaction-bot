@@ -47,7 +47,7 @@ class Tabuleiro():
 
 		
 	def massa_critica(self,pos):
-		'''Esse método retorna a massa crítica de uma determinada casela do grid
+		'''Essa função retorna a massa crítica de uma determinada casela do grid
 		
 		Args:
 			pos (tuple): Tupla com as coordenadas da casela
@@ -64,7 +64,7 @@ class Tabuleiro():
 			return 4
 	
 	def vizinhos(self,pos):
-		'''Esse método retorna uma lista com os vizinhos de uma casela.
+		'''Essa função retorna uma lista com os vizinhos de uma casela.
 		
 		Args:
 			pos (tuple): Tupla com as coordenadas da casela
@@ -81,6 +81,19 @@ class Tabuleiro():
 		return vizinhos
 		
 def movimento(tabuleiro, pos):
+	'''Essa função realiza um movimento no tabuleiro.
+	
+	Obs.: Ela se preocupa com o estado das caselas que ficarão instáveis com o movimento. As reações futuras não
+	são tratadas aqui.
+		
+	Args:
+		tabuleiro (tabuleiro): tabuleiro antes do movimento
+		pos (tuple): Tupla com as coordenadas da casela
+		
+	Return:
+		tabuleiro: estado do tabuleiro imediatamente após o movimento
+			
+	'''
 	tabuleiro = copy.deepcopy(tabuleiro)
 	assert tabuleiro.novo_movimento == sgn(tabuleiro[pos]) or 0 == sgn(tabuleiro[pos])
 	tabuleiro[pos] = tabuleiro[pos] + tabuleiro.novo_movimento
@@ -100,3 +113,4 @@ def movimento(tabuleiro, pos):
 				tabuleiro[i] = sgn(tabuleiro.novo_movimento)*(abs(tabuleiro[i])+1)
 	tabuleiro.novo_movimento *= -1
 	return tabuleiro
+
