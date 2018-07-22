@@ -25,6 +25,25 @@ def desenhaTabuleiro(tabuleiro=base.Tabuleiro()):
 	pygame.display.update()
 	print "Finalizou execucao"
 
+def inicia_reacao(tabuleiro, pos):
+	tabuleiro = base.copy.deepcopy(tabuleiro)
+	assert tabuleiro.novo_movimento == base.sgn(tabuleiro[pos]) or 0 == base.sgn(tabuleiro[pos])
+	tabuleiro[pos] = tabuleiro[pos] + tabuleiro.novo_movimento
+	while True:
+		desenhaTabuleiro(tabuleiro)
+		pygame.time.wait(250)
+		instavel = []
+		for pos in [(x,y) for x in xrange(tabuleiro.m) for y in xrange(tabuleiro.n)]:
+			if abs(tabuleiro[pos]) >= tabuleiro.massa_critica(pos):
+				instavel.append(pos)
+		if not instavel:
+			break
+		for pos in instavel:
+			tabuleiro[pos] -= tabuleiro.novo_movimento * tabuleiro.massa_critica(pos)
+			for viz in tabuleiro.vizinhos(pos):
+				tabuleiro[viz] = base.sgn(tabuleiro.novo_movimento) * (abs(tabuleiro[viz]+1))
+	desenhaTabuleiro(tabuleiro)
+
 def exibe_movimento(pos):
     quad = pygame.Rect(pos[1]*50,pos[0]*50,50,50)
     pygame.draw.rect(surface,(255,255,0),quad,0)
