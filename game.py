@@ -33,7 +33,7 @@ def inicia_reacao(tabuleiro, pos):
 		desenhaTabuleiro(tabuleiro)
 		pygame.time.wait(250)
 		instavel = []
-		for pos in [(x,y) for x in xrange(tabuleiro.m) for y in xrange(tabuleiro.n)]:
+		for pos in [(x,y) for x in xrange(tabuleiro.colunas) for y in xrange(tabuleiro.linhas)]:
 			if abs(tabuleiro[pos]) >= tabuleiro.massa_critica(pos):
 				instavel.append(pos)
 		if not instavel:
@@ -80,7 +80,8 @@ def main():
 					continue
 				tabuleiro[(y,x)] = tabuleiro[(y,x)] + tabuleiro.novo_movimento
 				exibe_movimento((y,x))
-				desenhaTabuleiro(tabuleiro)
+				#desenhaTabuleiro(tabuleiro)
+				inicia_reacao(tabuleiro,(y,x))
 
 def getNumColunas():
     surface.fill((0,0,0))
