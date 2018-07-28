@@ -76,7 +76,7 @@ def main():
 	if not is_redPlayer:
 		novo_movimento = minimax.minimax(tabuleiro)[0]
 		lock.acquire()
-		thread.start_new_thread(exibe_movimento, (tabuleiro, novo_movimento))
+		thread.start_new_thread(inicia_reacao, (tabuleiro, novo_movimento))
 		tabuleiro = base.movimento(tabuleiro, novo_movimento)
 		total_movimento += 1
 
@@ -105,7 +105,7 @@ def main():
 				#precisa trocar o nome de depth
 				exibe_movimento(novo_movimento)
 				lock.acquire()
-				thread.start_new_thread(exibe_movimento, (tabuleiro, novo_movimento))
+				thread.start_new_thread(inicia_reacao, (tabuleiro, novo_movimento))
 				tabuleiro = base.movimento(tabuleiro, novo_movimento)
 				total_movimento += 1
 				if total_movimento >= 2:

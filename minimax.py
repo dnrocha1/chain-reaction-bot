@@ -21,4 +21,4 @@ def minimax(tabuleiro, profundidade = 3, largura = 5):
 		if valor > mehor_valor:
 			mehor_valor = valor
 			melhor_posicao = nova_posicao
-	return (melhor_posicao, mehor_valor)
+	return melhor_posicao, mehor_valor
