@@ -72,6 +72,13 @@ def main():
 
 	#tela de jogo
 	desenhaTabuleiro(tabuleiro)
+	
+	if not is_redPlayer:
+		novo_movimento = minimax.minimax(tabuleiro)[0]
+		lock.acquire()
+		thread.start_new_thread(exibe_movimento, (tabuleiro, novo_movimento))
+		tabuleiro = base.movimento(tabuleiro, novo_movimento)
+		total_movimento += 1
 
 	this_loop = True
 	while this_loop:
@@ -99,10 +106,10 @@ def main():
 				exibe_movimento(novo_movimento)
 				lock.acquire()
 				thread.start_new_thread(exibe_movimento, (tabuleiro, novo_movimento))
-				tabuleiro = base.move(tabuleiro, novo_movimento)
+				tabuleiro = base.movimento(tabuleiro, novo_movimento)
 				total_movimento += 1
 				if total_movimento >= 2:
-					if base.score(tabuleiro,tabuleiro.novo_movimento*(-1)) == 10000:
+					if base.pontuacao(tabuleiro,tabuleiro.novo_movimento*(-1)) == 10000:
 						vencedor = tabuleiro.novo_movimento*(-1)
 						this_loop = False
 						break

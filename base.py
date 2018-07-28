@@ -118,7 +118,7 @@ def movimento(tabuleiro, posicao):
 def reacao(tabuleiro, jogador):
 	tabuleiro = copy.deepcopy(tabuleiro)
 	quantidade = []
-	for pos in [(x,y) for x in xrange(tabuleiro.m) for y in xrange(tabuleiro.n)]:
+	for pos in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
 		if abs(tabuleiro[pos]) == (tabuleiro.massa_critica(pos) - 1) and sgn(tabuleiro[pos]) == jogador:
 			l = 0
 			pilha_visita = []
@@ -138,9 +138,10 @@ def reacao(tabuleiro, jogador):
 
 	'''Funcao para calcular qual jogador foi o vencendo'''
 def pontuacao(tabuleiro, jogador):
-	pontos, orbes_jogador, orbes_ia = 0
-	for posicao in [(x,y) for x in xrange(tabuleiro.m) for y in xrange(tabuleiro.n)]:
-		if sng(tabuleiro[posicao]) == jogador:
+	pontos =0 
+	orbes_jogador, orbes_ia = 0, 0
+	for posicao in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
+		if sgn(tabuleiro[posicao]) == jogador:
 			orbes_jogador += abs(tabuleiro[posicao])
 			estaVuneravel = True
 			
