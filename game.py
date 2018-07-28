@@ -1,12 +1,14 @@
 import pygame
-import base
+import base,minimax
+import thread
+
 
 linhas, colunas = 9, 6
 
 pygame.init()
 surface = pygame.display.set_mode((50*colunas, 50*linhas))
 pygame.display.set_caption('Chain Reaction')
-
+lock = thread.allocate_lock()
 def desenhaTabuleiro(tabuleiro=base.Tabuleiro()):
 	surface.fill((0,0,0))
 	font = pygame.font.Font('Font.ttf', 48)
@@ -43,6 +45,7 @@ def inicia_reacao(tabuleiro, pos):
 			for viz in tabuleiro.vizinhos(pos):
 				tabuleiro[viz] = base.sgn(tabuleiro.novo_movimento) * (abs(tabuleiro[viz]+1))
 	desenhaTabuleiro(tabuleiro)
+	lock.release()
 
 def exibe_movimento(pos):
     quad = pygame.Rect(pos[1]*50,pos[0]*50,50,50)
@@ -65,7 +68,7 @@ def main():
 	surface = pygame.display.set_mode((50*colunas, 50*linhas))
 	pygame.display.set_caption('Chain Reaction')
 	tabuleiro = base.Tabuleiro(linhas=linhas,colunas=colunas)
-	total_moves = 0
+	total_movimento = 0
 
 	#tela de jogo
 	desenhaTabuleiro(tabuleiro)
@@ -81,7 +84,28 @@ def main():
 				#tabuleiro[(y,x)] = tabuleiro[(y,x)] + tabuleiro.novo_movimento
 				exibe_movimento((y,x))
 				#desenhaTabuleiro(tabuleiro)
-				inicia_reacao(tabuleiro,(y,x))
+				#inicia_reacao(tabuleiro,(y,x))
+				lock.acquire()
+				thread.start_new_thread(inicia_reacao, (tabuleiro,(y,x)))
+				tabuleiro = base.movimento(tabuleiro,(y,x))
+				total_movimento += 1
+				if total_movimento >= 2:
+					if base.pontuacao(tabuleiro,tabuleiro.novo_movimento*(-1)) == 10000:
+						vencedor = tabuleiro.novo_movimento*(-1)
+						this_loop = False
+						break
+				novo_movimento = minimax.minimax(tabuleiro,depth)[0]
+				#precisa trocar o nome de depth
+				exibe_movimento(novo_movimento)
+				lock.acquire()
+				thread.start_new_thread(exibe_movimento, (tabuleiro, novo_movimento))
+				tabuleiro = base.move(tabuleiro, novo_movimento)
+				total_movimento += 1
+				if total_movimento >= 2:
+					if base.score(tabuleiro,tabuleiro.novo_movimento*(-1)) == 10000:
+						vencedor = tabuleiro.novo_movimento*(-1)
+						this_loop = False
+						break
 
 def getNumColunas():
     surface.fill((0,0,0))
@@ -186,7 +210,7 @@ def escolher_jogador():
                 flag = False
     return is_redPlayer
 
-"""Funcao para exibir a tela incial. Exibindo as opcoes de cores para jogadores"""
+"""Funcao para  a tela incial. Exibindo as opcoes de cores para jogadores"""
 def tela_inicial():
     font = pygame.font.Font('Font.ttf', 72)
     texto = font.render("Vermelho", 1, (255,0,0))
