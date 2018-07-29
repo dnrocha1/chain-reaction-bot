@@ -10,17 +10,21 @@ def melhor_jogada(tabuleiro, colunas = 10):
 				return [pos]
 	return sorted(configuracao, key=configuracao.get, reverse=True)[:colunas]
 
-def minimax(tabuleiro, profundidade = 3, largura = 5):
+def alphabeta(tabuleiro, profundidade = 3, largura = 5, alfa = -10000):
 	melhores_jogadas = melhor_jogada(tabuleiro, colunas = largura)
 	if melhores_jogadas == []:
-    		return (-1,-1), -10000
-	melhor_posicao, mehor_valor = (melhores_jogadas[0], pontuacao(movimento(tabuleiro, melhores_jogadas[0]), tabuleiro.novo_movimento))
+		return (-1,-1), -10000
+	melhor_posicao, melhor_valor = (melhores_jogadas[0], pontuacao(movimento(tabuleiro, melhores_jogadas[0]), tabuleiro.novo_movimento))
 	if profundidade == 1:
-		return melhor_posicao, mehor_valor
+		return melhor_posicao, melhor_valor
 	for nova_posicao in melhor_jogada(tabuleiro):
 		novo = movimento(tabuleiro, nova_posicao)
-		valor = minimax(novo, profundidade = profundidade - 1)[1]
-		if valor > mehor_valor:
-			mehor_valor = valor
+		valor = alphabeta(novo, profundidade = profundidade - 1, alfa = alfa)[1]
+		beta = 10000
+		if valor > melhor_valor:
+			melhor_valor = valor
 			melhor_posicao = nova_posicao
-	return melhor_posicao, mehor_valor
+		alfa = max(alfa, beta)
+		if alfa >= beta:
+	   		break
+	return melhor_posicao, melhor_valor
