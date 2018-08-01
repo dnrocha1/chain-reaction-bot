@@ -32,6 +32,11 @@ def inicia_reacao(tabuleiro, pos):
 	tabuleiro[pos] = tabuleiro[pos] + tabuleiro.novo_movimento
 	print(tabuleiro)
 	while True:
+		somenteVerdes,somenteVermelhos = True,True #minimax eh vermelho e eh positivo
+		for posicao in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
+			if tabuleiro[posicao] != 0:
+				if tabuleiro[posicao] > 0:
+					somenteVerdes = False
 		desenha_tabuleiro(tabuleiro)
 		pygame.time.wait(250)
 		print("DESENHOU")
