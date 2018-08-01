@@ -30,9 +30,11 @@ def inicia_reacao(tabuleiro, pos):
 	tabuleiro = base.copy.deepcopy(tabuleiro)
 	assert tabuleiro.novo_movimento == base.sgn(tabuleiro[pos]) or 0 == base.sgn(tabuleiro[pos])
 	tabuleiro[pos] = tabuleiro[pos] + tabuleiro.novo_movimento
+	print(tabuleiro)
 	while True:
 		desenha_tabuleiro(tabuleiro)
 		pygame.time.wait(250)
+		print("DESENHOU")
 		unstable = []
 		for pos in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
 			if abs(tabuleiro[pos]) >= tabuleiro.massa_critica(pos):
@@ -63,9 +65,9 @@ def main():
 	textpos = text.get_rect(centerx = 25*n, centery = 25*m)
 	surface.blit(text, textpos)
 	pygame.display.update()
-	depth = random.randrange(4)
-	rows = random.randrange(2, 9)
-	columns = random.randrange(2, 6)
+	depth = 2#random.randrange(4)
+	rows = 2#random.randrange(2, 9)
+	columns = 3#random.randrange(2, 6)
 
 	#some initialization code
 	m, n = rows, columns
@@ -79,6 +81,9 @@ def main():
 	this_loop = True
 	while this_loop:
 		novo_movimento1 = minimax.minimax(tabuleiro)[0]
+		print "Minimax movimentou!"
+		pygame.time.wait(3000)
+		exibe_movimento(novo_movimento1)
 		lock.acquire()
 		thread.start_new_thread(inicia_reacao, (tabuleiro, novo_movimento1))
 		tabuleiro = base.movimento(tabuleiro, novo_movimento1)
@@ -89,6 +94,8 @@ def main():
 				this_loop = False
 				break
 		novo_movimento = alphabeta.alphabeta(tabuleiro,depth)[0]
+		print "Alphabeta movimentou!"
+		pygame.time.wait(3000)
 		exibe_movimento(novo_movimento)
 		lock.acquire()
 		thread.start_new_thread(inicia_reacao, (tabuleiro, novo_movimento))
