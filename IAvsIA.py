@@ -1,6 +1,7 @@
 import pygame, random
 import alphabeta,minimax, base
 import thread
+import time
 
 m, n = 9, 6
 
@@ -30,9 +31,31 @@ def inicia_reacao(tabuleiro, pos):
 	tabuleiro = base.copy.deepcopy(tabuleiro)
 	assert tabuleiro.novo_movimento == base.sgn(tabuleiro[pos]) or 0 == base.sgn(tabuleiro[pos])
 	tabuleiro[pos] = tabuleiro[pos] + tabuleiro.novo_movimento
-	while True:
+	print(tabuleiro)
+	flag = True
+	while flag == True:
+		somenteVerdes,somenteVermelhas = True,True #minimax eh vermelho e eh positivo
+		#varre procurando se existe somente verdes
+		for posicao in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
+			if somenteVerdes == False:
+				break
+			if total_movimentos >= 2 and tabuleiro[posicao] != 0:
+				if tabuleiro[posicao] > 0:
+					somenteVerdes = False
+		for posicao in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
+			if somenteVermelhas == False:
+				break
+			if total_movimentos >= 2 and tabuleiro[posicao] != 0:
+				if tabuleiro[posicao] < 0:
+					somenteVermelhas = False
+		if total_movimentos >= 2 and (somenteVerdes == True or somenteVermelhas == True):
+			print "SAIU DO LOOP!"
+			break
+		#print(somenteVerdes)
+		print("")
 		desenha_tabuleiro(tabuleiro)
 		pygame.time.wait(250)
+		print("DESENHOU")
 		unstable = []
 		for pos in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
 			if abs(tabuleiro[pos]) >= tabuleiro.massa_critica(pos):
@@ -63,7 +86,7 @@ def main():
 	textpos = text.get_rect(centerx = 25*n, centery = 25*m)
 	surface.blit(text, textpos)
 	pygame.display.update()
-	depth = random.randrange(4)
+	depth = random.randrange(1,4)
 	rows = random.randrange(2, 9)
 	columns = random.randrange(2, 6)
 
@@ -72,13 +95,23 @@ def main():
 	surface = pygame.display.set_mode((50*n, 50*m))
 	pygame.display.set_caption('Chain Reaction')
 	tabuleiro = base.Tabuleiro(linhas=m,colunas=n)
+	global total_movimentos
 	total_movimentos = 0
 
 	#game screen
+	tempoMinimax = 0
+	tempoAlphabeta = 0
 	desenha_tabuleiro(tabuleiro)
 	this_loop = True
+	start = time.time()
 	while this_loop:
+		iniciaMinimax = time.time()
 		novo_movimento1 = minimax.minimax(tabuleiro)[0]
+		terminaMinimax = time.time()
+		tempoMinimax += (terminaMinimax - iniciaMinimax)
+		print "Minimax movimentou!"
+		#pygame.time.wait(2000)
+		exibe_movimento(novo_movimento1)
 		lock.acquire()
 		thread.start_new_thread(inicia_reacao, (tabuleiro, novo_movimento1))
 		tabuleiro = base.movimento(tabuleiro, novo_movimento1)
@@ -88,7 +121,12 @@ def main():
 				vencedor = tabuleiro.novo_movimento*(-1)
 				this_loop = False
 				break
+		iniciaAlphabeta = time.time()
 		novo_movimento = alphabeta.alphabeta(tabuleiro,depth)[0]
+		terminaAlphabeta = time.time()
+		tempoAlphabeta += (terminaAlphabeta - iniciaAlphabeta)
+		print "Alphabeta movimentou!"
+		#pygame.time.wait(2000)
 		exibe_movimento(novo_movimento)
 		lock.acquire()
 		thread.start_new_thread(inicia_reacao, (tabuleiro, novo_movimento))
@@ -100,6 +138,11 @@ def main():
 				this_loop = False
 				break
 
+	end = time.time()
+	tempoTotal = end - start
+	print "Tempo total de execucao foi de %f ms" % tempoTotal
+	print "Tempo total de escolhas de jogadas do MINIMAX foi de %f ms" % tempoMinimax
+	print "Tempo total de escolhas de jogadas do ALPHABETA foi de %f ms" % tempoAlphabeta
 	#winning screen
 	while lock.locked():
 		continue
@@ -131,6 +174,7 @@ def main():
 	textpos = text.get_rect(centerx = 25*n, centery = 25*m)
 	surface.blit(text, textpos)
 	pygame.display.update()
+	pygame.time.wait(10000)
 
 
 if __name__ == "__main__":
