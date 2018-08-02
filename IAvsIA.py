@@ -31,12 +31,27 @@ def inicia_reacao(tabuleiro, pos):
 	assert tabuleiro.novo_movimento == base.sgn(tabuleiro[pos]) or 0 == base.sgn(tabuleiro[pos])
 	tabuleiro[pos] = tabuleiro[pos] + tabuleiro.novo_movimento
 	print(tabuleiro)
-	while True:
-		somenteVerdes,somenteVermelhos = True,True #minimax eh vermelho e eh positivo
+	flag = True
+	while flag == True:
+		somenteVerdes,somenteVermelhas = True,True #minimax eh vermelho e eh positivo
+		#varre procurando se existe somente verdes
 		for posicao in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
-			if tabuleiro[posicao] != 0:
+			if somenteVerdes == False:
+				break
+			if total_movimentos >= 2 and tabuleiro[posicao] != 0:
 				if tabuleiro[posicao] > 0:
 					somenteVerdes = False
+		for posicao in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
+			if somenteVermelhas == False:
+				break
+			if total_movimentos >= 2 and tabuleiro[posicao] != 0:
+				if tabuleiro[posicao] < 0:
+					somenteVermelhas = False
+		if total_movimentos >= 2 and (somenteVerdes == True or somenteVermelhas == True):
+			print "SAIU DO LOOP!"
+			break
+		#print(somenteVerdes)
+		print("")
 		desenha_tabuleiro(tabuleiro)
 		pygame.time.wait(250)
 		print("DESENHOU")
@@ -70,15 +85,16 @@ def main():
 	textpos = text.get_rect(centerx = 25*n, centery = 25*m)
 	surface.blit(text, textpos)
 	pygame.display.update()
-	depth = 2#random.randrange(4)
+	depth = 3#random.randrange(4)
 	rows = 2#random.randrange(2, 9)
-	columns = 3#random.randrange(2, 6)
+	columns = 2#random.randrange(2, 6)
 
 	#some initialization code
 	m, n = rows, columns
 	surface = pygame.display.set_mode((50*n, 50*m))
 	pygame.display.set_caption('Chain Reaction')
 	tabuleiro = base.Tabuleiro(linhas=m,colunas=n)
+	global total_movimentos
 	total_movimentos = 0
 
 	#game screen
@@ -87,7 +103,7 @@ def main():
 	while this_loop:
 		novo_movimento1 = minimax.minimax(tabuleiro)[0]
 		print "Minimax movimentou!"
-		pygame.time.wait(3000)
+		#pygame.time.wait(2000)
 		exibe_movimento(novo_movimento1)
 		lock.acquire()
 		thread.start_new_thread(inicia_reacao, (tabuleiro, novo_movimento1))
@@ -100,7 +116,7 @@ def main():
 				break
 		novo_movimento = alphabeta.alphabeta(tabuleiro,depth)[0]
 		print "Alphabeta movimentou!"
-		pygame.time.wait(3000)
+		#pygame.time.wait(2000)
 		exibe_movimento(novo_movimento)
 		lock.acquire()
 		thread.start_new_thread(inicia_reacao, (tabuleiro, novo_movimento))

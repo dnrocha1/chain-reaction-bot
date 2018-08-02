@@ -100,9 +100,9 @@ def movimento(tabuleiro, posicao):
 	t = time.time()
 	while True:
 		instavel = []
-		for posicao in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
-			if abs(tabuleiro[posicao]) >= tabuleiro.massa_critica(posicao):
-				instavel.append(posicao)
+		for pos in [(x,y) for x in xrange(tabuleiro.linhas) for y in xrange(tabuleiro.colunas)]:
+			if abs(tabuleiro[pos]) >= tabuleiro.massa_critica(pos):
+				instavel.append(pos)
 		if time.time() - t >= 3:
 			break
 		if not instavel:
