@@ -1,6 +1,7 @@
 import pygame, random
 import alphabeta,minimax, base
 import thread
+import time
 
 m, n = 9, 6
 
@@ -85,9 +86,9 @@ def main():
 	textpos = text.get_rect(centerx = 25*n, centery = 25*m)
 	surface.blit(text, textpos)
 	pygame.display.update()
-	depth = 3#random.randrange(4)
-	rows = 2#random.randrange(2, 9)
-	columns = 2#random.randrange(2, 6)
+	depth = random.randrange(1,4)
+	rows = random.randrange(2, 9)
+	columns = random.randrange(2, 6)
 
 	#some initialization code
 	m, n = rows, columns
@@ -98,10 +99,16 @@ def main():
 	total_movimentos = 0
 
 	#game screen
+	tempoMinimax = 0
+	tempoAlphabeta = 0
 	desenha_tabuleiro(tabuleiro)
 	this_loop = True
+	start = time.time()
 	while this_loop:
+		iniciaMinimax = time.time()
 		novo_movimento1 = minimax.minimax(tabuleiro)[0]
+		terminaMinimax = time.time()
+		tempoMinimax += (terminaMinimax - iniciaMinimax)
 		print "Minimax movimentou!"
 		#pygame.time.wait(2000)
 		exibe_movimento(novo_movimento1)
@@ -114,7 +121,10 @@ def main():
 				vencedor = tabuleiro.novo_movimento*(-1)
 				this_loop = False
 				break
+		iniciaAlphabeta = time.time()
 		novo_movimento = alphabeta.alphabeta(tabuleiro,depth)[0]
+		terminaAlphabeta = time.time()
+		tempoAlphabeta += (terminaAlphabeta - iniciaAlphabeta)
 		print "Alphabeta movimentou!"
 		#pygame.time.wait(2000)
 		exibe_movimento(novo_movimento)
@@ -128,6 +138,11 @@ def main():
 				this_loop = False
 				break
 
+	end = time.time()
+	tempoTotal = end - start
+	print "Tempo total de execucao foi de %f ms" % tempoTotal
+	print "Tempo total de escolhas de jogadas do MINIMAX foi de %f ms" % tempoMinimax
+	print "Tempo total de escolhas de jogadas do ALPHABETA foi de %f ms" % tempoAlphabeta
 	#winning screen
 	while lock.locked():
 		continue
@@ -159,6 +174,7 @@ def main():
 	textpos = text.get_rect(centerx = 25*n, centery = 25*m)
 	surface.blit(text, textpos)
 	pygame.display.update()
+	pygame.time.wait(10000)
 
 
 if __name__ == "__main__":
