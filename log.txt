@@ -1,0 +1,21 @@
+EXECUCAO #1 
+Tempo total de execucao foi de 4.219000 ms.
+Tempo total de escolhas de jogadas do MINIMAX foi de 3.865000 ms.
+Tempo total de escolhas de jogadas do ALPHABETA foi de 0.318000 ms.
+MINIMAX comecou jogando.
+O vencedor foi ALPHABETA.
+
+EXECUCAO #2 
+Tempo total de execucao foi de 0.092000 ms.
+Tempo total de escolhas de jogadas do MINIMAX foi de 0.079000 ms.
+Tempo total de escolhas de jogadas do ALPHABETA foi de 0.001000 ms.
+ALPHABETA comecou jogando.
+O vencedor foi ALPHABETA.
+
+EXECUCAO #3 
+Tempo total de execucao foi de 230.405000 ms.
+Tempo total de escolhas de jogadas do MINIMAX foi de 209.007000 ms.
+Tempo total de escolhas de jogadas do ALPHABETA foi de 18.345000 ms.
+ALPHABETA comecou jogando.
+O vencedor foi ALPHABETA.
+
